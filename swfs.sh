@@ -27,16 +27,38 @@ function start_python_server() {
 }
 
 function start_nginx_server() {
+    echo "Enter the directory to serve files from:"
+    read -r directory
+
+    if [ ! -d "$directory" ]; then
+        echo -e "\e[91mError: The specified directory does not exist.\e[0m"
+        return
+    fi
+
+    echo "Enter the port number:"
+    read -r port
+
     sudo pacman -S nginx
     sudo systemctl start nginx
-    echo -e "\e[92mNginx server started. Access your files at http://localhost.\e[0m"
+    echo -e "\e[92mNginx server started. Access your files at http://localhost:$port.\e[0m"
     echo "To stop the Nginx server, run: sudo systemctl stop nginx"
 }
 
 function start_apache_server() {
+    echo "Enter the directory to serve files from:"
+    read -r directory
+
+    if [ ! -d "$directory" ]; then
+        echo -e "\e[91mError: The specified directory does not exist.\e[0m"
+        return
+    fi
+
+    echo "Enter the port number:"
+    read -r port
+
     sudo pacman -S apache
     sudo systemctl start httpd
-    echo -e "\e[92mApache server started. Access your files at http://localhost.\e[0m"
+    echo -e "\e[92mApache server started. Access your files at http://localhost:$port.\e[0m"
 }
 
 clear  # Clear the console before displaying the menu
