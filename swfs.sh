@@ -45,7 +45,7 @@ clear  # Clear the console before displaying the menu
 
 check_python
 
-echo -e "\e[96mWelcome to the Professional File Server Script!\e[0m"
+echo -e "\e[96mWelcome to SWFS 1.0!\e[0m"
 echo "1. Start File Server"
 echo "2. Quit"
 
