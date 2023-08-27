@@ -14,15 +14,6 @@ function check_python() {
     fi
 }
 
-function check_nginx_installed() {
-    if command -v nginx &> /dev/null; then
-        echo -e "\e[92mNginx is already installed.\e[0m"
-    else
-        echo -e "\e[91mNginx is not installed. Installing Nginx...\e[0m"
-        sudo pacman -S nginx
-    fi
-}
-
 function start_python_server() {
     echo "Enter the directory to serve files from:"
     read -r directory
@@ -38,38 +29,6 @@ function start_python_server() {
     python3 -m http.server "$port" --directory "$directory"
 }
 
-function start_nginx_server() {
-    check_nginx_installed
-
-    echo "Enter the directory to serve files from:"
-    read -r directory
-
-    if [ ! -d "$directory" ]; then
-        echo -e "\e[91mError: The specified directory does not exist.\e[0m"
-        return
-    fi
-
-    echo "Starting Nginx server on port $NGINX_PORT..."
-    sudo systemctl start nginx
-    echo -e "\e[92mNginx server started. Access your files at http://localhost:$NGINX_PORT.\e[0m"
-    echo "To stop the Nginx server, run: sudo systemctl stop nginx"
-}
-
-function start_apache_server() {
-    echo "Enter the directory to serve files from:"
-    read -r directory
-
-    if [ ! -d "$directory" ]; then
-        echo -e "\e[91mError: The specified directory does not exist.\e[0m"
-        return
-    fi
-
-    echo "Starting Apache server on port $APACHE_PORT..."
-    sudo pacman -S apache
-    sudo systemctl start httpd
-    echo -e "\e[92mApache server started. Access your files at http://localhost:$APACHE_PORT.\e[0m"
-}
-
 clear  # Clear the console before displaying the menu
 
 check_python
@@ -77,9 +36,7 @@ check_python
 echo -e "\e[96mWelcome to the Professional File Server Script!\e[0m"
 echo "Choose a server type:"
 echo "1. Python built-in server"
-echo "2. Nginx server"
-echo "3. Apache server"
-echo "4. Quit"
+echo "2. Quit"
 
 read -r choice
 
@@ -88,12 +45,6 @@ case $choice in
         start_python_server
         ;;
     2)
-        start_nginx_server
-        ;;
-    3)
-        start_apache_server
-        ;;
-    4)
         echo "Exiting..."
         ;;
     *)
