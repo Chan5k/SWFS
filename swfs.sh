@@ -14,6 +14,15 @@ function check_python() {
     fi
 }
 
+function check_nginx_installed() {
+    if command -v nginx &> /dev/null; then
+        echo -e "\e[92mNginx is already installed.\e[0m"
+    else
+        echo -e "\e[91mNginx is not installed. Installing Nginx...\e[0m"
+        sudo pacman -S nginx
+    fi
+}
+
 function start_python_server() {
     echo "Enter the directory to serve files from:"
     read -r directory
@@ -30,6 +39,8 @@ function start_python_server() {
 }
 
 function start_nginx_server() {
+    check_nginx_installed
+
     echo "Enter the directory to serve files from:"
     read -r directory
 
@@ -39,7 +50,6 @@ function start_nginx_server() {
     fi
 
     echo "Starting Nginx server on port $NGINX_PORT..."
-    sudo pacman -S nginx
     sudo systemctl start nginx
     echo -e "\e[92mNginx server started. Access your files at http://localhost:$NGINX_PORT.\e[0m"
     echo "To stop the Nginx server, run: sudo systemctl stop nginx"
