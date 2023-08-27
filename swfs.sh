@@ -1,5 +1,8 @@
 #!/bin/bash
 
+NGINX_PORT=8080
+APACHE_PORT=8081
+
 function check_python() {
     if command -v python3 &> /dev/null; then
         echo -e "\e[92mPython3 is installed.\e[0m"
@@ -35,12 +38,10 @@ function start_nginx_server() {
         return
     fi
 
-    echo "Enter the port number:"
-    read -r port
-
+    echo "Starting Nginx server on port $NGINX_PORT..."
     sudo pacman -S nginx
     sudo systemctl start nginx
-    echo -e "\e[92mNginx server started. Access your files at http://localhost:$port.\e[0m"
+    echo -e "\e[92mNginx server started. Access your files at http://localhost:$NGINX_PORT.\e[0m"
     echo "To stop the Nginx server, run: sudo systemctl stop nginx"
 }
 
@@ -53,12 +54,10 @@ function start_apache_server() {
         return
     fi
 
-    echo "Enter the port number:"
-    read -r port
-
+    echo "Starting Apache server on port $APACHE_PORT..."
     sudo pacman -S apache
     sudo systemctl start httpd
-    echo -e "\e[92mApache server started. Access your files at http://localhost:$port.\e[0m"
+    echo -e "\e[92mApache server started. Access your files at http://localhost:$APACHE_PORT.\e[0m"
 }
 
 clear  # Clear the console before displaying the menu
